@@ -3,35 +3,34 @@ class Solution:
         if not nums:
             return [-1, -1]
 
-        st = self.find_boundary(nums, target, True)
+        first_idx = find_idx(nums, target, True)
 
-        if st == -1:
+        if first_idx == -1:
             return [-1, -1]
 
-        en = self.find_boundary(nums, target, False)
+        last_idx = find_idx(nums, target, False)
+        
+        return [first_idx, last_idx]
 
-        return [st, en]
-    
-    def find_boundary(self, nums: List[int], target: int, isFirst: bool) -> int:
-        length = len(nums)
-        l, r = 0, length - 1
-        while l <= r:
-            mid = (l + r) // 2 
-            
-            if nums[mid] == target:
-                if isFirst:
-                    if mid == l or nums[mid - 1] != target:
-                        return mid
-                    else:
-                        r = mid - 1
-                else:
-                    if mid == r or nums[mid + 1] != target:
-                        return mid
-                    else:
-                        l = mid + 1
-            elif nums[mid] > target:
+
+def find_idx(arr: List[int], target: int, isFirst: bool) -> int:
+    l, r = 0, len(arr) - 1
+
+    while l <= r:
+        mid = (l + r) // 2
+        if arr[mid] == target:
+            if isFirst:
+                if mid == l or arr[mid - 1] != target:
+                    return mid
                 r = mid - 1
             else:
+                if mid == r or arr[mid + 1] != target:
+                    return mid
                 l = mid + 1
+        elif arr[mid] > target:
+            r = mid - 1
+        else:
+            l = mid + 1
 
-        return -1
+    return -1
+
